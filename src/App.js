@@ -1,41 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-
-import { Viewport } from "./ios/iPhoneViewport";
-import { NavBar } from "./navbar/NavBar";
-import { ThemeSwitcher } from "./controls/ThemeSwitcher";
-import { lightTheme } from "./ds/Colors";
+import { Link } from "react-router-dom";
 
 const Wrap = styled(motion.div)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 100%;
-	position: relative;
-	overflow: hidden;
+	padding: 4em 8em;
+	h1 {
+		font-size: 2em;
+		opacity: 0.5;
+	}
+	ul {
+		font-size: 2em;
+		list-style: none;
+	}
+	a {
+		color: black;
+	}
 `;
 
-
-function App() {
-
-  const [theme, setTheme] = useState({...lightTheme});
-
+export const App = props => {
 	return (
-		<Wrap
-      animate={{
-        backgroundColor: theme.z0,
-      }}
-      initial={false}
-    >
-			<Viewport theme={theme}>
-				<NavBar theme={theme} />
-        
-			</Viewport>
-      <ThemeSwitcher theme={theme} setTheme={setTheme} />
+		<Wrap>
+			<h1>Muze Protos</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to="/reactions01">Reactions 1</Link>
+					</li>
+					<li>
+						<Link to="/reactions02">Reactions 2</Link>
+					</li>
+				</ul>
+			</nav>
 		</Wrap>
 	);
-}
-
-export default App;
+};
