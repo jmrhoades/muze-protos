@@ -2,7 +2,7 @@ import {
     animate,
     generatePhysics,
     getRandomInt,
-  } from '../helpers';
+  } from './helpers';
   
     const factors = [-0.6, -0.3, 0, 0.3, 0.6];
   

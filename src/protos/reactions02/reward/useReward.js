@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { stickers } from "./Stickers/Stickers";
+import { stickers } from "./Stickers";
 import { getContainerById } from "./helpers";
 
 export const useReward = (id, type, config) => {
