@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
 import { Post } from "./Post";
-
 
 const Container = styled(motion.div)`
 	position: relative;
@@ -16,8 +15,6 @@ const List = styled(motion.div)`
 export const Home = props => {
 	const width = props.metrics.viewport_width;
 	const height = props.metrics.viewport_height;
-
-	
 
 	// this user's home feed
 	const friends = [props.user.id, ...props.user.friends];
@@ -32,8 +29,7 @@ export const Home = props => {
 		return t;
 	};
 	const posts = props.data.posts.filter(isFriendPost);
-	
-
+	const scrollViewRef = useRef(null);
 	return (
 		<Container
 			style={{
@@ -45,17 +41,21 @@ export const Home = props => {
 			initial={false}
 		>
 			<List
+				ref={scrollViewRef}
 				drag={"y"}
-				dragConstraints={{ top: -2392+height, bottom: 0 }}
+				dragConstraints={{ top: -5784 + height, bottom: 0 }}
 				style={{
-					paddingTop: 128,
+					paddingTop: 160,
 				}}
 			>
 				{posts.map(post => (
 					<Post
 						key={post.id}
-						data={post}
-						setData={props.setData}
+						post={post}
+						reactions={props.data.reactions.filter(r => {
+							return r.post_id === post.id;
+						})}
+						data={props.data}
 						metrics={props.metrics}
 						theme={props.theme}
 						marginBottom={props.metrics.home_post_spacing}
@@ -63,10 +63,12 @@ export const Home = props => {
 						showSheet={props.showSheet}
 						user={props.user}
 						users={props.data.users}
+						setActivePostID={props.setActivePostID}
+						activePostID={props.activePostID}
+						snd={props.snd}
 					/>
 				))}
 			</List>
-			
 		</Container>
 	);
 };

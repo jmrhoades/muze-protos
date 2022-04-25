@@ -27,8 +27,8 @@ export const transitions = {
 	},
 
     fastEase: {
-		duration: 0.15,
-		ease: [0.4, 0, 0.1, 1],
+		duration: 0.35,
+		ease: "easeInOut",
 	},
 
 	slowEase: {

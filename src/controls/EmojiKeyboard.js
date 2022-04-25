@@ -2,8 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 
-import { Icon } from "../ds/Icon";
-import { lightTheme, darkTheme } from "../ds/Colors";
+
+
 import { transitions } from "../ds/Transitions";
 
 
@@ -41,6 +41,7 @@ export const EmojiKeyboard = props => {
 					y: props.showEmojiKeyboard ? 0 : 370,
 				}}
 				transition={transitions.slowSpring}
+				initial={false}
 			/>
 		</Wrap>
 	);

@@ -59,7 +59,8 @@ export const BottomSheet = props => {
 			animate={{
 				y: props.show ? 0 : sheetHeight + 100,
 			}}
-            transition={transitions.slowSpring}
+            initial={false}
+            transition={props.show ? transitions.slowSpring : transitions.fastEase}
             dragTransition={transitions.springySpring}
 			onDragEnd={(event, info) => {
 				if (info.offset.y >= 50) {
@@ -76,6 +77,7 @@ export const BottomSheet = props => {
 				animate={{
 					backgroundColor: props.theme.sheetBackgroundMaterial,
 				}}
+                initial={false}
 			/>
 			<Handle
 				onTap={() => {
@@ -86,6 +88,7 @@ export const BottomSheet = props => {
 					animate={{
 						backgroundColor: props.theme.sheetHandleMaterial,
 					}}
+                    initial={false}
 				/>
 			</Handle>
             {props.children}

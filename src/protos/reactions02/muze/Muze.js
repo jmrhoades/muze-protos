@@ -6,7 +6,7 @@ import { NavBar } from "../navbar/NavBar";
 import { Home } from "../home/Home";
 import { ModalDismiss } from "../controls/ModalDismiss";
 import { BottomSheet } from "../controls/BottomSheet";
-import { ReactionStickers } from "../home/ReactionStickers";
+import { UserStickers } from "../home/UserStickers";
 
 const Wrap = styled(motion.div)`
 	position: relative;
@@ -15,10 +15,11 @@ const Wrap = styled(motion.div)`
 	height: 100%;
 `;
 
-export const Muze = ({ data, user, theme, metrics }) => {
-	const [reactionSheetShowing, setReactionSheetShowing] = useState(true);
+export const Muze = ({ data, user, theme, metrics, model, snd }) => {
+	const [stickerSheetShowing, setStickerSheetShowing] = useState(false);
+	const [activePostID, setActivePostID] = useState();
 
-	const sheetYOffset = useMotionValue(0);
+	const sheetYOffset = useMotionValue(400);
 	const modalOpacity = useTransform(sheetYOffset, [0, 400], [1, 0]);
 	return (
 		<Wrap
@@ -32,23 +33,35 @@ export const Muze = ({ data, user, theme, metrics }) => {
 				data={data}
 				metrics={metrics}
 				theme={theme}
-				setShowSheet={setReactionSheetShowing}
-				showSheet={reactionSheetShowing}
+				setShowSheet={setStickerSheetShowing}
+				showSheet={stickerSheetShowing}
+				setActivePostID={setActivePostID}
+				activePostID={activePostID}
+				model={model}
+				snd={snd}
 			/>
 			<NavBar theme={theme} user={user} data={data} />
 			<ModalDismiss
 				theme={theme}
-				show={reactionSheetShowing}
-				setShow={setReactionSheetShowing}
+				show={stickerSheetShowing}
+				setShow={setStickerSheetShowing}
 				modalOpacity={modalOpacity}
 			/>
 			<BottomSheet
 				theme={theme}
-				show={reactionSheetShowing}
-				setShow={setReactionSheetShowing}
+				show={stickerSheetShowing}
+				setShow={setStickerSheetShowing}
 				sheetYOffset={sheetYOffset}
 			>
-				<ReactionStickers theme={theme} data={data} user={user} />
+				<UserStickers
+					theme={theme}
+					data={data}
+					user={user}
+					setShowSheet={setStickerSheetShowing}
+					activePostID={activePostID}
+					model={model}
+					snd={snd}
+				/>
 			</BottomSheet>
 		</Wrap>
 	);

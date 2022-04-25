@@ -1,6 +1,4 @@
-import { AnimateFunction } from './helpers.types';
-
-export const animate: AnimateFunction = ({
+export const animate = ({
   root,
   particles,
   decay,
@@ -11,11 +9,13 @@ export const animate: AnimateFunction = ({
   const totalTicks = lifetime;
   let tick = 0;
 
+  console.log("animate", particles)
+
   const update = () => {
     particles.forEach((particle) =>
       updateParticle(particle, tick / totalTicks, decay)
     );
-
+    
     tick += 1;
     if (tick < totalTicks) {
       window.requestAnimationFrame(update);
@@ -34,19 +34,19 @@ export const animate: AnimateFunction = ({
 
 export const { PI } = Math;
 
-export const degreesToRadians = (degrees: number) => degrees * (PI / 180);
+export const degreesToRadians = (degrees) => degrees * (PI / 180);
 
-export const getRandomInt = (min: number, max: number) => {
+export const getRandomInt = (min, max) => {
   const minVal = Math.ceil(min);
   const maxVal = Math.floor(max);
   return Math.floor(Math.random() * (maxVal - minVal)) + minVal;
 };
 
 export const generatePhysics = (
-  angle: number,
-  spread: number,
-  startVelocity: number,
-  differentiator: number
+  angle,
+  spread,
+  startVelocity,
+  differentiator
 ) => {
   const radAngle = degreesToRadians(angle);
   const radSpread = degreesToRadians(spread);
@@ -65,11 +65,11 @@ export const generatePhysics = (
   };
 };
 
-export const getContainerById = (id: string) => {
+export const getContainerById = (id) => {
   const container = document.getElementById(id);
   if (!container) {
     console.error(
-      `Element with an ID of ${id} could not be found. Please provide a valid ID.`
+      `Element with an ID of ${id} could not be found. Boo on you.`
     );
   }
   return container;

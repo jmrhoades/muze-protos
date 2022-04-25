@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import uuid from "react-uuid";
+
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -8,6 +10,10 @@ import { lightTheme as startingTheme } from "../../ds/Colors";
 
 import { Muze } from "./muze/Muze";
 import { testDataA as testData } from "./data";
+
+import Snd from 'snd-lib';
+
+
 
 const Wrap = styled(motion.div)`
 	display: flex;
@@ -20,14 +26,27 @@ const Wrap = styled(motion.div)`
 `;
 
 const Phone = styled(motion.div)`
-	margin-right: 4em;
+	&:first-child {
+		margin-right: 3vw;
+	}
 `;
 
 const PhoneLabel = styled(motion.div)`
-	padding-top: 2em;
-	text-align: center;
+	/* padding-top: 2em; */
+	/* text-align: center; */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	margin-top: -64px;
+	/* margin-left: -24px; */
+	position: relative;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,.1);
+
 	p {
-		font-size: 1.1em;
+		font-size: 1.5em;
 		&:nth-child(2) {
 			opacity: 0.3;
 		}
@@ -44,13 +63,39 @@ const Sticker = styled(motion.img)``;
 export const Reactions02 = props => {
 	const [theme, setTheme] = useState({ ...startingTheme });
 
+	const snd = new Snd();
+
 	const [metrics, setMetrics] = useState({
 		viewport_width: 390,
 		viewport_height: 844,
-		home_post_spacing: 64,
+		home_post_spacing: 96,
 	});
 
 	const [data, setData] = useState(testData);
+
+	const model = {};
+	model.addReactionFromUserToPost = (sticker_id, user_id, post_id) => {
+		const reaction = {
+			id: uuid(),
+			created_by: user_id,
+			sticker_id: sticker_id,
+			create_at_relative: "now",
+			post_id: post_id,
+		};
+		//console.log("addReactionFromUserToPost", sticker_id, user_id, post_id);
+		data.reactions.push(reaction);
+		data.newReactionID = reaction.id;
+		setData({ ...data });
+
+		
+		
+						
+	};
+
+	// Load audio file
+snd.load(Snd.KITS.SND01).then(() => {
+	console.log("loaded!")
+})
 
 	return (
 		<Wrap
@@ -62,30 +107,34 @@ export const Reactions02 = props => {
 			{data.users.map(user => (
 				<Phone key={user.id}>
 					<Viewport theme={theme}>
-						<Muze data={data} theme={theme} metrics={metrics} user={user} />
+						<Muze data={data} theme={theme} metrics={metrics} user={user} model={model} snd={snd} />
 					</Viewport>
-					<PhoneLabel>
+					<PhoneLabel
+						style={{
+							backgroundColor: user.profileBackgroundColor,
+						}}
+					>
 						<motion.p
 							animate={{
 								color: theme.fillPrimary,
 							}}
 						>
-							{user.name}
+							{user.profileInitials}
 						</motion.p>
-						<motion.p
+						{/* <motion.p
 							animate={{
 								color: theme.fillPrimary,
 							}}
 						>
 							{user.role}
-						</motion.p>
+						</motion.p> */}
 					</PhoneLabel>
 				</Phone>
 			))}
 
 			<StickerPreload>
-				{data.reactions.map(s => (
-					<Sticker src={s.src} id={s.id} />
+				{data.stickers.map(s => (
+					<Sticker src={s.src} id={s.id} key={s.id} />
 				))}
 			</StickerPreload>
 

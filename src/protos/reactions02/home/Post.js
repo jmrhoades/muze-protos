@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
 import { transitions } from "../../../ds/Transitions";
 import { Icon } from "../../../ds/Icon";
+import { reward } from "../reward/useReward";
 
 const ListItem = styled(motion.div)`
 	position: relative;
@@ -13,13 +14,13 @@ const ListItem = styled(motion.div)`
 `;
 
 const ListItemContent = styled(motion.div)`
-	width: 100%;
+	/* width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	transform: translateY(32px);
+	transform: translateY(32px); */
 `;
 
 const ImageWrap = styled(motion.div)`
@@ -76,18 +77,35 @@ const PostButton = styled(motion.div)`
 
 const ConfettiTarget = styled.div`
 	position: absolute;
-	top: 65%;
-	left: 50%;
+	top: 50%;
+	left: 35%;
 	pointer-events: none;
+
+	width: 10px;
+	height: 10px;
+	/* background-color: red; */
+	border-radius: 5px;
+
+	/* position: absolute;
+
+	left: 50%;
+	top: 65%; */
 `;
 
-export const Post = props => {
+const ReactionsList = styled.div`
+	padding-left: 32px;
+`;
 
-	
+const stickerSize = 56;
+
+export const Post = props => {
 	const postFrom = props.users.filter(u => {
-		return u.id === props.data.created_by
-	})[0]
-	
+		return u.id === props.post.created_by;
+	})[0];
+
+	useLayoutEffect(() => {
+		// if new reaction is a part of this post
+	});
 
 	return (
 		<ListItem
@@ -102,16 +120,18 @@ export const Post = props => {
 							{postFrom.name}
 						</Name>
 						<Timestamp animate={{ color: props.theme.fillSecondary }} initial={false}>
-							{props.data.create_at_relative}
+							{props.post.create_at_relative}
 						</Timestamp>
 					</Attribution>
 					<Actions>
 						<PostButton>
 							<Icon name={"MoreOptions2Dots"} fill={props.theme.fillPrimary} />
 						</PostButton>
+						{(props.user.id !== props.post.created_by) && (
 						<PostButton
 							onTap={() => {
 								props.setShowSheet(true);
+								props.setActivePostID(props.post.id);
 							}}
 							animate={{
 								opacity: props.showSheet ? 0.2 : 1,
@@ -120,9 +140,11 @@ export const Post = props => {
 								type: "tween",
 								duration: 0.2,
 							}}
+							initial={false}
 						>
 							<Icon name={"Sticker"} fill={props.theme.fillPrimary} />
 						</PostButton>
+						)}
 					</Actions>
 				</MetaData>
 
@@ -131,14 +153,98 @@ export const Post = props => {
 					initial={false}
 					transition={transitions.slowSpring}
 				>
-					<Image src={props.data.image.src} />
+					<Image src={props.post.image.src} />
+					<ConfettiTarget id={"receiver_target_" + props.user.id + props.post.id} />
 				</ImageWrap>
-			</ListItemContent>
 
-			<ConfettiTarget id={"rewardTarget_"} />
-			{/* <ConfettiTarget id={"rewardTarget_" + props.data.id + "_02"} /> */}
-			{/* <ConfettiTarget id={"rewardTarget_" + props.data.id + "_03"} /> */}
-			{/* <ConfettiTarget id={"rewardTarget_" + props.data.id + "_04"} /> */}
+				<ReactionsList
+					style={{
+						paddingLeft: stickerSize / 2,
+					}}
+				>
+					{props.reactions.map(r => (
+						<Sticker
+							key={r.id}
+							reaction={r}
+							data={props.data}
+							stickers={props.data.stickers}
+							activePostID={props.activePostID}
+							user={props.user}
+							snd={props.snd}
+						/>
+					))}
+				</ReactionsList>
+			</ListItemContent>
 		</ListItem>
+	);
+};
+
+const StickerWrap = styled(motion.span)`
+	position: relative;
+	display: inline-block;
+`;
+
+const StickerImage = styled(motion.img)`
+	position: relative;
+	filter: drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.05)) drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.15))
+		drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.1));
+`;
+
+const StickerRewardTarget = styled(motion.span)`
+	display: block;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+`;
+
+const Sticker = props => {
+	const sticker = props.stickers.filter(s => {
+		return s.id === props.reaction.sticker_id;
+	})[0];
+
+	const reward_id =
+		"poststicker_" + props.user.id + "_" + props.activePostID + "_" + sticker.id + "_" + props.reaction.id;
+
+	useLayoutEffect(() => {
+		if (props.data.newReactionID === props.reaction.id && props.reaction.created_by === props.user.id) {
+			setTimeout(() => {
+				reward(reward_id, {
+					elementSize: 12,
+					elementCount: 24,
+					image: sticker.src,
+					spread: 40,
+					startVelocity: 20,
+					lifetime: 105,
+				});
+				props.data.newReactionID = null;
+			}, 100);
+		}
+	});
+
+	return (
+		<StickerWrap
+			style={{
+				height: stickerSize,
+				marginLeft: -stickerSize / 4,
+				marginTop: -stickerSize / 2,
+			}}
+		>
+			<StickerImage
+				src={sticker.src}
+				style={{
+					height: stickerSize,
+				}}
+				initial={{
+					scale: 0,
+				}}
+				animate={{
+					scale: 1,
+				}}
+				transition={{
+					type: "spring",
+				}}
+			></StickerImage>
+			<StickerRewardTarget id={reward_id} />
+		</StickerWrap>
 	);
 };

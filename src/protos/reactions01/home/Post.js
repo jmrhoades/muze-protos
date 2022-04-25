@@ -112,7 +112,7 @@ export const Post = props => {
 					animate={{ y: isFocussed ? 48 : 0 }}
 					transition={transitions.slowSpring}
 				>
-					<Attribution animate={{ backgroundColor: props.theme.attributionSurface }}>
+					<Attribution animate={{ backgroundColor: props.theme.attributionSurface }} initial={false}>
 						<Name animate={{ color: props.theme.fillPrimary }} initial={false}>
 							{props.data.attribution.name}
 						</Name>
