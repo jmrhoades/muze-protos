@@ -9,7 +9,7 @@ export const animate = ({
   const totalTicks = lifetime;
   let tick = 0;
 
-  console.log("animate", particles)
+  //console.log("animate", particles)
 
   const update = () => {
     particles.forEach((particle) =>

@@ -2,6 +2,9 @@ import React, { useLayoutEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+import useSound from "use-sound";
+import pop_sound from "../../../sounds/pop05.mp3";
+
 import { transitions } from "../../../ds/Transitions";
 import { Icon } from "../../../ds/Icon";
 import { reward } from "../reward/useReward";
@@ -99,6 +102,8 @@ const ReactionsList = styled.div`
 const stickerSize = 56;
 
 export const Post = props => {
+	const [playPop] = useSound(pop_sound);
+
 	const postFrom = props.users.filter(u => {
 		return u.id === props.post.created_by;
 	})[0];
@@ -124,26 +129,31 @@ export const Post = props => {
 						</Timestamp>
 					</Attribution>
 					<Actions>
-						<PostButton>
-							<Icon name={"MoreOptions2Dots"} fill={props.theme.fillPrimary} />
-						</PostButton>
-						{(props.user.id !== props.post.created_by) && (
 						<PostButton
 							onTap={() => {
-								props.setShowSheet(true);
-								props.setActivePostID(props.post.id);
+								playPop();
 							}}
-							animate={{
-								opacity: props.showSheet ? 0.2 : 1,
-							}}
-							transition={{
-								type: "tween",
-								duration: 0.2,
-							}}
-							initial={false}
 						>
-							<Icon name={"Sticker"} fill={props.theme.fillPrimary} />
+							<Icon name={"MoreOptions2Dots"} fill={props.theme.fillPrimary} />
 						</PostButton>
+						{props.user.id !== props.post.created_by && (
+							<PostButton
+								onTap={() => {
+									playPop();
+									props.setShowSheet(true);
+									props.setActivePostID(props.post.id);
+								}}
+								animate={{
+									opacity: props.showSheet ? 0.2 : 1,
+								}}
+								transition={{
+									type: "tween",
+									duration: 0.2,
+								}}
+								initial={false}
+							>
+								<Icon name={"Sticker"} fill={props.theme.fillPrimary} />
+							</PostButton>
 						)}
 					</Actions>
 				</MetaData>

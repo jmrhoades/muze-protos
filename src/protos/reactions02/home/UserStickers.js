@@ -8,8 +8,8 @@ import { Icon } from "../../../ds/Icon";
 //import { useReward } from "react-rewards";
 import { reward } from "../reward/useReward";
 
-import pop_sound from "../../../sounds/pop01.mp3";
-import sticker_send_sound from "../../../sounds/sticker_send_01.mp3";
+import pop_sound from "../../../sounds/pop06.mp3";
+import sticker_send_sound from "../../../sounds/sticker_send_04.mp3";
 
 const StickersWrap = styled(motion.div)`
 	position: relative;
