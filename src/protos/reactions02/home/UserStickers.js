@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import Snd from "snd-lib";
 import useSound from "use-sound";
 
 //import { transitions } from "../../../ds/Transitions";
@@ -9,8 +8,8 @@ import { Icon } from "../../../ds/Icon";
 //import { useReward } from "react-rewards";
 import { reward } from "../reward/useReward";
 
-import crackle3 from "../../../sounds/crackle3.mp3";
-import crackle1 from "../../../sounds/crackle1.mp3";
+import pop_sound from "../../../sounds/pop01.mp3";
+import sticker_send_sound from "../../../sounds/sticker_send_01.mp3";
 
 const StickersWrap = styled(motion.div)`
 	position: relative;
@@ -57,8 +56,8 @@ export const UserStickers = props => {
 		return r.created_by === props.user.id;
 	});
 
-	const [play1] = useSound(crackle3);
-	const [play2] = useSound(crackle1);
+	const [pop] = useSound(pop_sound);
+	const [success] = useSound(sticker_send_sound);
 
 	//const { reward } = useReward("rewardTarget_"+props.user.id, "stickers", {image:"/stickers/sticker-06.png"});
 
@@ -104,15 +103,8 @@ export const UserStickers = props => {
 							});
 						}, 50);
 
-						//play1();
-						//play2();
-
-						props.snd.play(Snd.SOUNDS.BUTTON);
-
-						//play1();
-						setTimeout(play1, 100);
-						setTimeout(() => props.snd.play(Snd.SOUNDS.CELEBRATION), 200);
-						setTimeout(play2, 400);
+						pop();
+						setTimeout(success, 200);
 					}}
 				/>
 			))}

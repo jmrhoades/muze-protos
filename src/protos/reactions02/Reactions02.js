@@ -11,10 +11,6 @@ import { lightTheme as startingTheme } from "../../ds/Colors";
 import { Muze } from "./muze/Muze";
 import { testDataA as testData } from "./data";
 
-import Snd from 'snd-lib';
-
-
-
 const Wrap = styled(motion.div)`
 	display: flex;
 	align-items: center;
@@ -43,7 +39,7 @@ const PhoneLabel = styled(motion.div)`
 	margin-top: -64px;
 	/* margin-left: -24px; */
 	position: relative;
-	box-shadow: 0 1px 5px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1);
 
 	p {
 		font-size: 1.5em;
@@ -62,8 +58,6 @@ const Sticker = styled(motion.img)``;
 
 export const Reactions02 = props => {
 	const [theme, setTheme] = useState({ ...startingTheme });
-
-	const snd = new Snd();
 
 	const [metrics, setMetrics] = useState({
 		viewport_width: 390,
@@ -86,16 +80,7 @@ export const Reactions02 = props => {
 		data.reactions.push(reaction);
 		data.newReactionID = reaction.id;
 		setData({ ...data });
-
-		
-		
-						
 	};
-
-	// Load audio file
-snd.load(Snd.KITS.SND01).then(() => {
-	console.log("loaded!")
-})
 
 	return (
 		<Wrap
@@ -107,7 +92,7 @@ snd.load(Snd.KITS.SND01).then(() => {
 			{data.users.map(user => (
 				<Phone key={user.id}>
 					<Viewport theme={theme}>
-						<Muze data={data} theme={theme} metrics={metrics} user={user} model={model} snd={snd} />
+						<Muze data={data} theme={theme} metrics={metrics} user={user} model={model} />
 					</Viewport>
 					<PhoneLabel
 						style={{
@@ -121,13 +106,6 @@ snd.load(Snd.KITS.SND01).then(() => {
 						>
 							{user.profileInitials}
 						</motion.p>
-						{/* <motion.p
-							animate={{
-								color: theme.fillPrimary,
-							}}
-						>
-							{user.role}
-						</motion.p> */}
 					</PhoneLabel>
 				</Phone>
 			))}

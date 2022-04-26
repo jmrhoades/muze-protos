@@ -60,7 +60,7 @@ export const Muze = ({ data, user, theme, metrics, model, snd }) => {
 					setShowSheet={setStickerSheetShowing}
 					activePostID={activePostID}
 					model={model}
-					snd={snd}
+					
 				/>
 			</BottomSheet>
 		</Wrap>

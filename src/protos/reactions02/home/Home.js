@@ -65,7 +65,7 @@ export const Home = props => {
 						users={props.data.users}
 						setActivePostID={props.setActivePostID}
 						activePostID={props.activePostID}
-						snd={props.snd}
+						
 					/>
 				))}
 			</List>
