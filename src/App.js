@@ -30,6 +30,9 @@ export const App = props => {
 					<li>
 						<Link to="/reactions02">Reactions 2</Link>
 					</li>
+					<li>
+						<Link to="/reactions02Promo">Reactions 2 Promo</Link>
+					</li>
 				</ul>
 			</nav>
 		</Wrap>

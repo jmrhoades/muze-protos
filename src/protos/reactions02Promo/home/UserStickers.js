@@ -57,7 +57,7 @@ export const UserStickers = props => {
 	});
 
 	const [pop] = useSound(pop_sound);
-	const [playTap] = useSound(tap_sound);
+	//const [playTap] = useSound(tap_sound);
 
 	//const [success] = useSound(sticker_send_sound);
 
@@ -91,6 +91,7 @@ export const UserStickers = props => {
 						props.setShowSheet(false);
 						props.model.addReactionFromUserToPost(s.id, props.user.id, props.activePostID);
 
+						/*
 						const u = props.data.posts.filter(p => {
 							return p.id === props.activePostID;
 						})[0];
@@ -104,9 +105,10 @@ export const UserStickers = props => {
 								
 							});
 						}, 50);
+						*/
 
 						//playTap();
-						setTimeout(pop, 100);
+						
 					}}
 				/>
 			))}
